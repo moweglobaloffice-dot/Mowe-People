@@ -7,8 +7,6 @@ import {
 } from '../data/homeData';
 import { allPrograms, categoryList } from '../data/servicesData';
 
-const summitRegistrationUrl = 'https://zgnp-zngp.maillist-manage.com/ua/Optin?od=11287ecdabbfc3&zx=138125574&lD=117d0fa9a9d5af077&sD=117d0fa9a9d5af092';
-
 async function submitEventRegistration(payload) {
   const response = await fetch('/api/event-registration', {
     method: 'POST',
@@ -32,8 +30,6 @@ export default function Home() {
   const [showAnnounce, setShowAnnounce] = useState(true);
   const [newsletterState, setNewsletterState] = useState({ email: '', submitting: false, success: false });
   const [activePillar, setActivePillar] = useState(0);
-  const [eventPopup, setEventPopup] = useState({ visible: false, title: 'Future of Work Summit', meta: '1 October 2026 · Online' });
-  const [summitModalOpen, setSummitModalOpen] = useState(false);
   const [eventSubmitting, setEventSubmitting] = useState(false);
   const [eventError, setEventError] = useState('');
   const pillarRefs = useRef([]);
@@ -41,22 +37,6 @@ export default function Home() {
     category,
     programmes: allPrograms.filter((program) => program.category === category),
   })).filter(({ category }) => category !== 'Capability Development');
-
-  useEffect(() => {
-    const timer = setTimeout(() => setEventPopup((popup) => ({ ...popup, visible: true })), 3500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!summitModalOpen) return undefined;
-    document.body.classList.add('modal-open');
-    const closeOnEscape = (e) => { if (e.key === 'Escape') setSummitModalOpen(false); };
-    window.addEventListener('keydown', closeOnEscape);
-    return () => {
-      document.body.classList.remove('modal-open');
-      window.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [summitModalOpen]);
 
   useEffect(() => {
     const refs = pillarRefs.current;
@@ -154,25 +134,6 @@ export default function Home() {
         <div className="trusted-label">Trusted by teams building engaged workforces</div>
         <div className="trusted-mask">
           <div className="trusted-track">{trustHtml}</div>
-        </div>
-      </section>
-
-      <section className="summit-feature" id="future-of-work-summit">
-        <div className="summit-feature-card">
-          <div className="summit-poster">
-            <img src="/assets/future-of-work-summit.jpg" alt="Future of Work Summit poster. 1 October 2026." />
-          </div>
-          <div className="summit-feature-copy">
-            <div className="summit-label"><span></span> Upcoming event</div>
-            <p className="summit-date">1 October 2026 <span>Â·</span> Online</p>
-            <h2>Future of Work Summit</h2>
-            <p className="summit-description">Get ready for the realities of work ahead: remote work, freelancing, the gig economy, and the age of AI.</p>
-            <div className="summit-audience">
-              <span>Graduates</span><span>Young professionals</span><span>Corporate members</span>
-            </div>
-            <p className="summit-access">Your online access link will be shared after registration.</p>
-            <button className="summit-register" type="button" onClick={() => setSummitModalOpen(true)}>Register for the summit</button>
-          </div>
         </div>
       </section>
 
@@ -416,23 +377,6 @@ export default function Home() {
         </div>
       </section>
 
-      {summitModalOpen && (
-        <div className="summit-modal-backdrop" onClick={() => setSummitModalOpen(false)}>
-          <div className="summit-modal" role="dialog" aria-modal="true" aria-label="Future of Work Summit registration" onClick={(e) => e.stopPropagation()}>
-            <button className="summit-modal-close" type="button" aria-label="Close registration" onClick={() => setSummitModalOpen(false)}>&times;</button>
-            <iframe className="summit-zoho-form" title="Register for the Future of Work Summit" src={summitRegistrationUrl} loading="lazy" />
-          </div>
-        </div>
-      )}
-      {eventPopup.visible && (
-        <div className="event-popup up">
-          <button className="event-popup-close" type="button" aria-label="Dismiss upcoming event" onClick={() => setEventPopup((popup) => ({ ...popup, visible: false }))}>&times;</button>
-          <div className="tag"><span>Upcoming Event</span></div>
-          <div className="title">{eventPopup.title}</div>
-          <div className="meta">{eventPopup.meta}</div>
-          <button className="event-popup-register" type="button" onClick={() => setSummitModalOpen(true)}>Register now</button>
-        </div>
-      )}
     </div>
   );
 }

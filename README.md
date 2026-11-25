@@ -35,7 +35,7 @@ The app routes are `/`, `/services`, `/fred-rabbi`, and `/contact`.
 
 ## Forms
 
-Programme calendar and Future of Work Summit registrations are submitted to `/api/event-registration`, saved in the Neon `event_registrations` table, and emailed to `REGISTRATION_EMAIL_TO` (defaults to `moweglobaloffice@gmail.com`) through Gmail SMTP. Configure `DATABASE_URL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_SECURE`, and `REGISTRATION_EMAIL_TO` in `.env` for local use and as Vercel project environment variables for production. SMTP credentials must be stored only in server environment variables; `.env` is ignored by Git.
+Programme calendar registrations are submitted to `/api/event-registration`, saved in the Neon `event_registrations` table, and emailed to `REGISTRATION_EMAIL_TO` (defaults to `moweglobaloffice@gmail.com`) through Gmail SMTP. Configure `DATABASE_URL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_SECURE`, and `REGISTRATION_EMAIL_TO` in `.env` for local use and as Vercel project environment variables for production. SMTP credentials must be stored only in server environment variables; `.env` is ignored by Git.
 
 The API creates the `event_registrations` table on its first successful request. `.env` is ignored by Git; use `.env.example` as a template and configure the same variable in Vercel for production.
 
